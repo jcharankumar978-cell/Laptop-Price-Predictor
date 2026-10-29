@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Laptop Price Predictor</title>
+  <style>
+    *{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f3f6fb;margin:0;color:#182338}
+    .wrap{max-width:760px;margin:40px auto;padding:20px}.card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 8px 28px #18233812}
+    h1{margin:0 0 8px}.muted{color:#64748b}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    label{display:block;font-weight:600;margin:10px 0 6px}input,select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;background:white}
+    button{margin-top:20px;padding:13px 20px;border:0;border-radius:8px;background:#2457d6;color:white;font-weight:700;cursor:pointer;width:100%}
+    .result{margin-top:20px;padding:16px;background:#eefbf3;border-radius:10px;font-size:20px;font-weight:700}
+    .error{margin-top:16px;padding:12px;background:#fff1f2;color:#9f1239;border-radius:8px}
+    @media(max-width:600px){.grid{grid-template-columns:1fr}.wrap{margin:10px auto}}
+  </style>
+</head>
+<body><main class="wrap"><section class="card">
+  <h1>💻 Laptop Price Predictor</h1>
+  <p class="muted">Estimate a laptop price from its brand, RAM, processor family and storage.</p>
+  <form method="post">
+    <div class="grid">
+      <div><label for="brand">Brand</label><select id="brand" name="brand" required>
+        <option value="">Select brand</option>{% for b in brands %}<option value="{{b}}" {% if form.brand==b %}selected{% endif %}>{{b}}</option>{% endfor %}
+      </select></div>
+      <div><label for="ram">RAM (GB)</label><input id="ram" name="ram" type="number" min="1" step="1" value="{{form.ram}}" required></div>
+      <div><label for="processor">Processor family</label><select id="processor" name="processor" required>
+        <option value="">Select processor</option>{% for p in processors %}<option value="{{p}}" {% if form.processor==p %}selected{% endif %}>{{p}}</option>{% endfor %}
+      </select></div>
+      <div><label for="storage">Storage (GB)</label><input id="storage" name="storage" type="number" min="0" step="1" value="{{form.storage}}" required></div>
+    </div>
+    <button type="submit">Predict Laptop Price</button>
+  </form>
+  {% if prediction is not none %}<div class="result">Estimated price: {{ "%.2f"|format(prediction) }} <small>(source dataset price units)</small></div>{% endif %}
+  {% if error %}<div class="error">{{error}}</div>{% endif %}
+  <p class="muted">Educational estimate only. Actual market prices vary by model, condition, seller and date.</p>
+</section></main></body></html>
